@@ -1,6 +1,8 @@
+StringWalk is a rewrite of [StringReader](https://github.com/rabbitboots/string_reader), and is provided under the same license terms.
+
 MIT License
 
-Copyright (c) 2024 rabbitboots
+Copyright (c) 2022 - 2024 RBTS
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
