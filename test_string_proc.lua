@@ -401,7 +401,8 @@ a = 3.21
 		--[[
 		You get the idea.
 
-		StringProc gets more serious use in the Lua XML Library (coming soon).
+		StringProc gets more serious use in the Lua XML Library:
+		https://github.com/rabbitboots/lxl
 		--]]
 	end
 	--]====]

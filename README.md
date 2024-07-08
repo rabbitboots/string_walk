@@ -26,8 +26,6 @@ local second = W:litReq("bar", "Missing irreplacable 'bar'")
 print(first, second)
 ```
 
-The Lua XML Library *(coming soon)* will be a more practical example of how the API works.
-
 
 # StringWalk API
 
