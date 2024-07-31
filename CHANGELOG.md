@@ -1,5 +1,13 @@
 # StringWalk changelog
 
+# v2.1.0 -- 2024-JUL-31
+
+* Removed the *plain mode* argument from `W:find()` and `W:findReq()`, and moved its functionality to two new methods: `W:plain()` / `W:plainReq()`.
+* Increased the returned capture count for `W:find()`, `W:findReq()`, `W:match()`, `W:matchReq()` and `W:req()` from 9 to 16.
+* Increased the return values for `W:req()` from 11 to 18.
+* StringProc documentation: removed a reference to the *except* token (`-`) which was removed before the initial public release.
+
+
 # v2.0.0 -- 2024-JUL-04
 
 This is a major rewrite of [StringReader](https://github.com/rabbitboots/string_reader). Unfortunately, there are too many changes to lay out a straightforward upgrade guide.

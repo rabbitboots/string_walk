@@ -1,4 +1,4 @@
-**Version:** 2.0.0
+**Version:** 2.1.0 (See *CHANGELOG.md* for breaking changes from 2.0.0)
 
 # StringWalk
 
@@ -99,20 +99,36 @@ Toggles the printing of line and character numbers in warnings and errors.
 
 Calls `string.find()` at the current position. If a match is found, returns the `i` and `j` indices and captures, and advances the position past `j`.
 
-`local i, j, [captures...] = W:find(ptn, [plain])`
+`local i, j, [captures...] = W:find(ptn)`
 
 * `ptn`: The pattern string for `string.find()`.
 
-* `[plain]`: Tells `string.find()` to perform a literal search without magic characters.
-
-**Returns:** The string index boundaries of the find, and up to nine captures, or `nil` if there wasn't a match.
+**Returns:** The string index boundaries of the find, and up to 16 captures, or `nil` if there wasn't a match.
 
 
 ### W:findReq
 
 Like W:find(), but raises an error if the search is unsuccessful.
 
-`local i, j, [captures...] = W:findReq(ptn, [plain], [err])`
+`local i, j, [captures...] = W:findReq(ptn, [err])`
+
+
+## W:plain
+
+Like `W:find()`, but the search is conducted with `string.find()`'s *plain mode* active. All pattern-matching magic characters are treated as plain characters. As such, this method does not support captures.
+
+`local i, j = W:plain(ptn)`
+
+* `ptn`: The pattern string for `string.find()`.
+
+**Returns:** The string index boundaries of the find, or `nil` if there wasn't a match.
+
+
+## W:plainReq
+
+Like `W:plain()`, but raises an error if the search was unsuccessful.
+
+`local i, j = W:plainReq(ptn, [err])`
 
 
 ## W:lit
@@ -147,7 +163,7 @@ Calls `string.find()` at the current position. If a match is found, returns the 
 
 * `ptn`: The pattern string for `string.find()`.
 
-**Returns:** The match or up to nine captures, or `nil` if there wasn't a match.
+**Returns:** The match or up to 16 captures, or `nil` if there wasn't a match.
 
 **Notes:**
 
@@ -326,7 +342,7 @@ Prints the walker's byte offset and line + character number, and the internal co
 
 The assertion method used by the `*Req` method variations. Raises a Lua error if the first return value is `nil/false`.
 
-`local a,b,c,d,e,f,g,h,i,j,k = W:req(fn, [err], ...)`
+`local a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r = W:req(fn, [err], ...)`
 
 * `fn`: The function to call. It takes a walker object as its first argument, and `...` as its remaining arguments.
 
@@ -334,7 +350,7 @@ The assertion method used by the `*Req` method variations. Raises a Lua error if
 
 * `...`: Additional arguments for `fn`.
 
-**Returns:** Up to 11 values returned by `fn`.
+**Returns:** Up to 18 values returned by `fn`.
 
 
 ## W:assert
@@ -387,11 +403,16 @@ Pops all strings from the stack.
 
 ## Field Names
 
-It's convenient to attach state to a walker object while parsing. Besides method names, the following fields are **reserved for internal use**:
+It's convenient to attach state to a walker object while parsing. Besides method names, the following field names are **reserved for internal use**:
 
 * Any field that is a single upper-case ASCII letter (A-Z)
 
 * Any field that begins with an underscore
+
+
+## 16 Captures
+
+The limit of 16 returned captures is not connected to Lua's actual maximum returnable captures; it is a limitation of the library. Captures #17 and up may be correctly processed by `string.find()` and `string.match()`, but they will not be returned by the walker methods.
 
 
 ## Req methods

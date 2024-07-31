@@ -1,4 +1,4 @@
--- stringWalk v2.0.0
+-- stringWalk v2.1.0
 -- https://www.github.com/rabbitboots/string_walk
 
 
@@ -259,19 +259,35 @@ function _mt_walk.setLineCharDisplay(W, line, char)
 end
 
 
-function _mt_walk.find(W, ptn, plain)
+function _mt_walk.find(W, ptn)
 	_ok(W)
 
-	local a,b,c,d,e,f,g,h,i,j,k = W.S:find(ptn, W.I, plain)
+	local a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r = W.S:find(ptn, W.I)
 	if a then
 		W.I = b + 1
 	end
-	return a,b,c,d,e,f,g,h,i,j,k
+	return a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r
 end
 
 
 function _mt_walk.findReq(W, ptn, plain, err)
 	return W:req(W.find, err or lang.fail_find_req, ptn, plain)
+end
+
+
+function _mt_walk.plain(W, ptn)
+	_ok(W)
+
+	local a,b = W.S:find(ptn, W.I, true)
+	if a then
+		W.I = b + 1
+	end
+	return a,b
+end
+
+
+function _mt_walk.plainReq(W, ptn, err)
+	return W:req(W.plain, err or lang.fail_find_req, ptn)
 end
 
 
@@ -294,12 +310,12 @@ end
 function _mt_walk.match(W, ptn)
 	_ok(W)
 
-	local a,b,c,d,e,f,g,h,i,j,k = W:find(ptn)
+	local a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r = W:find(ptn)
 	-- Behave like string.match()
 	if a and not c then
 		c = W.S:sub(a, b)
 	end
-	return c,d,e,f,g,h,i,j,k
+	return c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r
 end
 
 
@@ -451,11 +467,11 @@ end
 function _mt_walk.req(W, fn, err, ...)
 	_ok(W)
 
-	local a,b,c,d,e,f,g,h,i,j,k = fn(W, ...)
+	local a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r = fn(W, ...)
 	if not a then
 		W:error(err or lang.fail_req, 3)
 	end
-	return a,b,c,d,e,f,g,h,i,j,k
+	return a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r
 end
 
 

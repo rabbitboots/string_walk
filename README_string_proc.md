@@ -154,7 +154,7 @@ Checks words in a production table against the keys in a symbol look-up table. R
 
 ## Precedence
 
-From highest to lowest: `()` `A[?*+]` `A B` `A | B` `A - B`
+From highest to lowest: `()` `A[?*+]` `A B` `A | B`
 
 
 ## Traverse Return Tables

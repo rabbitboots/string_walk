@@ -175,6 +175,42 @@ self:registerJob("W:find()", function(self)
 		self:isEqual(c2, "b")
 		self:isEqual(c3, "r")
 	end
+
+	self:print(3, "[+] test the max number of returned captures")
+	do
+		--[[
+		This test should get up to local variable 'r', and then the remainder should be nil.
+		--]]
+		local W = stringWalk.new("abcdefghijklmnopqrstuvwxyz")
+		local a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z = W:find([[
+(a)(b)(c)(d)(e)(f)(g)(h)(i)(j)(k)(l)(m)(n)(o)(p)(q)(r)(s)(t)(u)(v)(w)(x)(y)(z)]])
+		self:isEqual(a, 1)
+		self:isEqual(b, 26)
+		self:isEqual(c, "a")
+		self:isEqual(d, "b")
+		self:isEqual(e, "c")
+		self:isEqual(f, "d")
+		self:isEqual(g, "e")
+		self:isEqual(h, "f")
+		self:isEqual(i, "g")
+		self:isEqual(j, "h")
+		self:isEqual(k, "i")
+		self:isEqual(l, "j")
+		self:isEqual(m, "k")
+		self:isEqual(n, "l")
+		self:isEqual(o, "m")
+		self:isEqual(p, "n")
+		self:isEqual(q, "o")
+		self:isEqual(r, "p")
+		self:isEqual(s, nil)
+		self:isEqual(t, nil)
+		self:isEqual(u, nil)
+		self:isEqual(v, nil)
+		self:isEqual(w, nil)
+		self:isEqual(x, nil)
+		self:isEqual(y, nil)
+		self:isEqual(z, nil)
+	end
 end
 )
 --]===]
@@ -196,6 +232,51 @@ self:registerJob("W:findReq()", function(self)
 		self:isEqual(i, 4)
 		self:isEqual(j, 6)
 		self:isEqual(cap, "bar")
+		self:lf(4)
+	end
+end
+)
+--]===]
+
+
+-- [===[
+--]]
+self:registerFunction("W:plain()", _mt_walk.plain)
+
+self:registerJob("W:plain()", function(self)
+	do
+		local W = stringWalk.new("fo(oba)r") -- literal, not a capture
+		local i, j = W:plain("(oba)")
+		self:isEqual(i, 3)
+		self:isEqual(j, 7)
+	end
+
+	do
+		local W = stringWalk.new("foobar")
+		local i, j = W:plain("zoink")
+		self:isEqual(i, nil)
+		self:isEqual(j, nil)
+	end
+end
+)
+--]===]
+
+
+-- [===[
+self:registerFunction("W:plainReq()", _mt_walk.plainReq)
+
+self:registerJob("W:plainReq()", function(self)
+	do
+		local W = stringWalk.new("foobar")
+		self:expectLuaError("no match", _mt_walk.plainReq, W, "zan", false, "no dice")
+	end
+
+	do
+		self:print(3, "[+] expected behavior")
+		local W = stringWalk.new("foobar")
+		local i, j = W:plainReq("bar")
+		self:isEqual(i, 4)
+		self:isEqual(j, 6)
 		self:lf(4)
 	end
 end
