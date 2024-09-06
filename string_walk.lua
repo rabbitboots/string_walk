@@ -1,4 +1,4 @@
--- stringWalk v2.1.0
+-- stringWalk v2.1.1
 -- https://www.github.com/rabbitboots/string_walk
 
 
@@ -116,36 +116,25 @@ local function _ok(W)
 end
 
 
-local function _lineCharNum(s, p)
-	-- Only valid for UTF-8 strings
-	local i, ln, cn = 1, 1, 0
-	p = math.min(p, #s)
-	while i <= p do
-		local b = s:byte(i)
+function stringWalk.countLineChar(s, i, j, ln, cn)
+	-- on the first call, j, ln, cn == 1, 1, 1
 
-		-- Step over carriage return when it is paired with line feed
-		if b == 0xd and s:byte(i + 1) == 0xa then
-			i = i + 1
-			b = s:byte(i)
+	-- count line feeds
+	while true do
+		local n = s:match("\r?\n()", j)
+		if not n or n > i then
+			break
 		end
+		cn, ln, j = 1, ln + 1, n
+	end
 
-		-- Line feed
-		if b == 0xa then
-			ln = ln + 1
-			cn = 0
+	-- count characters (UTF-8 non-continuation bytes)
+	while true do
+		local n = s:find("[^\128-\191]", j)
+		if not n or n >= i then
+			break
 		end
-		cn = cn + 1
-
-		-- Step to next UTF-8 start octet
-		i = i + 1
-		b = s:byte(i)
-		while b do
-			if not (b >= 0x80 and b <= 0xbf) then
-				break
-			end
-			i = i + 1
-			b = s:byte(i)
-		end
+		j, cn = n + 1, cn + 1
 	end
 
 	return ln, cn
@@ -179,7 +168,7 @@ local function _getPosInfo(W)
 		local unk = lang.line_info_unk
 		ln, cn = unk, unk
 	else
-		ln, cn = _lineCharNum(s, i)
+		ln, cn = stringWalk.countLineChar(s, i, 1, 1, 1)
 	end
 
 	if not W._cn then
@@ -443,7 +432,8 @@ function _mt_walk.getLineCharNumbers(W)
 	_ok(W)
 
 	local s, i = _baseInfo(W)
-	return _lineCharNum(s, i)
+	local ln, cn = stringWalk.countLineChar(s, i, 1, 1, 1)
+	return ln, cn
 end
 
 

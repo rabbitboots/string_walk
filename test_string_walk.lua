@@ -652,11 +652,19 @@ self:registerJob("W:getLineCharNumbers()", function(self)
 		self:isEqual(cn, 2)
 
 		-- 11\n22
+		--   ^
+		W:step(1)
+		ln, cn = W:getLineCharNumbers()
+		self:isEqual(ln, 1)
+		self:isEqual(cn, 3)
+
+		-- 11\n22
 		--     ^
 		W:step(1)
 		ln, cn = W:getLineCharNumbers()
 		self:isEqual(ln, 2)
 		self:isEqual(cn, 1)
+		self:lf(4)
 
 		-- 11\n22
 		--      ^
@@ -685,11 +693,35 @@ self:registerJob("W:getLineCharNumbers()", function(self)
 		self:isEqual(cn, 2)
 
 		-- aa\r\nbb
+		--   ^
+		W:step(1)
+		ln, cn = W:getLineCharNumbers()
+		self:isEqual(ln, 1)
+		self:isEqual(cn, 3)
+		self:lf(4)
+
+		-- aa\r\nbb
+		--     ^
+		W:step(1)
+		ln, cn = W:getLineCharNumbers()
+		self:isEqual(ln, 1)
+		self:isEqual(cn, 4)
+		self:lf(4)
+
+		-- aa\r\nbb
 		--       ^
-		W:step(2)
+		W:step(1)
 		ln, cn = W:getLineCharNumbers()
 		self:isEqual(ln, 2)
 		self:isEqual(cn, 1)
+		self:lf(4)
+
+		-- aa\r\nbb
+		--        ^
+		W:step(1)
+		ln, cn = W:getLineCharNumbers()
+		self:isEqual(ln, 2)
+		self:isEqual(cn, 2)
 		self:lf(4)
 	end
 
@@ -701,8 +733,83 @@ self:registerJob("W:getLineCharNumbers()", function(self)
 		W:goEOS()
 		ln, cn = W:getLineCharNumbers()
 		self:isEqual(ln, 1)
-		self:isEqual(cn, 7)
+		self:isEqual(cn, 8) -- #str + 1
 		self:lf(4)
+	end
+end
+)
+--]===]
+
+
+-- [===[
+self:registerFunction("stringWalk.countLineChar()", stringWalk.countLineChar)
+
+self:registerJob("stringWalk.countLineChar()", function(self)
+	-- This function is used internally for W:getLineCharNumbers().
+	-- It can be used directly for better performance when collecting
+	-- many sets of line and character numbers in a string (the walker
+	-- method always starts from byte 1).
+
+	do
+		local str = [[
+the quick brown fox
+jumps over the lazy
+dog]]
+
+		self:print(3, "[+] Get the line and char numbers for this string:\n" .. str)
+		local counts = {}
+		local j, ln, cn = 1, 1, 1
+		for i, word in str:gmatch("()([a-z]+)") do
+			ln, cn = stringWalk.countLineChar(str, i, j, ln, cn)
+			j = i
+			table.insert(counts, {word=word, i=i, ln=ln, cn=cn})
+			print("word", word, "i", i, "ln", ln, "cn", cn)
+		end
+
+		self:isEqual(counts[1].word, "the")
+		self:isEqual(counts[1].i, 1)
+		self:isEqual(counts[1].ln, 1)
+		self:isEqual(counts[1].cn, 1)
+
+		self:isEqual(counts[2].word, "quick")
+		self:isEqual(counts[2].i, 5)
+		self:isEqual(counts[2].ln, 1)
+		self:isEqual(counts[2].cn, 5)
+
+		self:isEqual(counts[3].word, "brown")
+		self:isEqual(counts[3].i, 11)
+		self:isEqual(counts[3].ln, 1)
+		self:isEqual(counts[3].cn, 11)
+
+		self:isEqual(counts[4].word, "fox")
+		self:isEqual(counts[4].i, 17)
+		self:isEqual(counts[4].ln, 1)
+		self:isEqual(counts[4].cn, 17)
+
+		self:isEqual(counts[5].word, "jumps")
+		self:isEqual(counts[5].i, 21)
+		self:isEqual(counts[5].ln, 2)
+		self:isEqual(counts[5].cn, 1)
+
+		self:isEqual(counts[6].word, "over")
+		self:isEqual(counts[6].i, 27)
+		self:isEqual(counts[6].ln, 2)
+		self:isEqual(counts[6].cn, 7)
+
+		self:isEqual(counts[7].word, "the")
+		self:isEqual(counts[7].i, 32)
+		self:isEqual(counts[7].ln, 2)
+		self:isEqual(counts[7].cn, 12)
+
+		self:isEqual(counts[8].word, "lazy")
+		self:isEqual(counts[8].i, 36)
+		self:isEqual(counts[8].ln, 2)
+		self:isEqual(counts[8].cn, 16)
+
+		self:isEqual(counts[9].word, "dog")
+		self:isEqual(counts[9].i, 41)
+		self:isEqual(counts[9].ln, 3)
+		self:isEqual(counts[9].cn, 1)
 	end
 end
 )

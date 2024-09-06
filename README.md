@@ -1,4 +1,4 @@
-**Version:** 2.1.0 (See *CHANGELOG.md* for breaking changes from 2.0.0)
+**Version:** 2.1.1
 
 # StringWalk
 
@@ -38,6 +38,39 @@ Creates a new walker object.
 * `[s]`: An optional string to assign. If not provided, the walker will start with an empty string.
 
 **Returns:** The walker object.
+
+
+## stringWalk.countLineChar
+
+Returns the line and character numbers for a given byte position in a UTF-8 string.
+
+`local ln, cn  = function stringWalk.countLineChar(s, i, j, ln, cn)`
+
+* `s`: The string to scan.
+
+* `i`: The byte position in the string.
+
+* `j`: Where to start scanning in the string (use 1 on the first call).
+
+* `ln`: The initial line number to use for this call (use 1 for the first call).
+
+* `cn`: The initial character number to use for this call (use 1 for the first call).
+
+**Returns:** The line and character number for the input position.
+
+**Notes:**
+
+* The input string is expected to be valid UTF-8.
+
+* This function can be used instead of `Walker:getLineCharNumbers()` if you are collecting sequential line and character numbers in a loop. While the walker method begins counting from the first byte every time, this function can start from any valid UTF-8 start byte.
+
+* This function performs no safety checks on the input. For each call:
+  * All numbers should be integers
+  * `j` should be less than or equal to `i`
+
+* Behavior if `i` is out of bounds:
+  * Less than 1: Returns line 1, char 1
+  * Greater than `#s`: Returns line 1, char `#s` + 1
 
 
 # Walker Methods
@@ -311,11 +344,16 @@ Prints a warning message. Depending on the walker's configuration, a line and ch
 
 ## W:getLineCharNumbers
 
-Gets a line and character number for the walker's position. If there are stack frames, then the lowest stack position is used. *Only valid for UTF-8 strings.*
+Gets a line and character number for the walker's position. If there are stack frames, then the lowest stack position is used. *Only valid for correctly encoded UTF-8 strings.*
 
 `local ln, cn = W:getLineCharNumbers()`
 
 **Returns:** The walker's line number and character number.
+
+
+**Notes:**
+
+* This method counts from the beginning of the string for every call. To count line and character numbers incrementally, see the function `stringWalk.countLineChar()`.
 
 
 ## W:getIndex
@@ -449,7 +487,7 @@ StringWalk cannot get the numeric value of the code point. You can use a functio
 
 # License (MIT)
 
-StringWalk is a rewrite of [StringReader](https://github.com/rabbitboots/string_reader), and is provided under the same license terms.
+StringWalk is a rewrite of [StringReader](https://github.com/rabbitboots/string_reader), and is provided under the same license.
 
 ```
 Copyright (c) 2022 - 2024 RBTS

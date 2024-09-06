@@ -1,5 +1,12 @@
 # StringWalk changelog
 
+# v2.1.1 -- 2024-SEPT-05
+
+* Rewrote the function that counts line and character numbers, resulting in improved performance of the `W:getLineCharNumbers()` method (PUC-Lua 5.1).
+  * The function is exposed to the library user as `stringWalk.countLineChar()`, and it can now be used incrementally in a loop. Refer to the README for usage details.
+* Upgraded test/err_test.lua to v2.1.2.
+
+
 # v2.1.0 -- 2024-JUL-31
 
 * Removed the *plain mode* argument from `W:find()` and `W:findReq()`, and moved its functionality to two new methods: `W:plain()` / `W:plainReq()`.
