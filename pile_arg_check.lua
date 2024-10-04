@@ -1,4 +1,4 @@
--- PILE argCheck v1.1.0
+-- PILE argCheck v1.1.0 (modified)
 -- (C) 2024 PILE Contributors
 -- License: MIT or MIT-0
 -- https://github.com/rabbitboots/pile_base
