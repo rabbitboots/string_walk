@@ -1,5 +1,11 @@
 # StringWalk changelog
 
+# v2.1.2 -- 2024-OCT-04
+
+* Gathered license text for test libraries and placed it in `test_LICENSE`.
+* Integrated PILE modules.
+
+
 # v2.1.1 -- 2024-SEPT-05
 
 * Rewrote the function that counts line and character numbers, resulting in improved performance of the `W:getLineCharNumbers()` method (PUC-Lua 5.1).

@@ -1,4 +1,4 @@
--- stringWalk v2.1.1
+-- stringWalk v2.1.2
 -- https://www.github.com/rabbitboots/string_walk
 
 
@@ -53,42 +53,20 @@ stringWalk.lang = {
 local lang = stringWalk.lang
 
 
-local interp -- v v02
-do
-	local v, c = {}, function(t) for k in pairs(t) do t[k] = nil end end
-	interp = function(s, ...)
-		c(v)
-		for i = 1, select("#", ...) do
-			v[tostring(i)] = tostring(select(i, ...))
-		end
-		local r = tostring(s):gsub("%$(%d+)", v):gsub("%$;", "$")
-		c(v)
-		return r
-	end
-end
-stringWalk._interp = interp
+local PATH = ... and (...):match("(.-)[^%.]+$") or ""
+
+
+local pArg = require(PATH .. "pile_arg_check")
+local interp = require(PATH .. "pile_interp")
+
+
+local _argType, _argInt = pArg.type, pArg.int
 
 
 stringWalk.ws1 = "[^\t\f\v\r\n\32]" -- "%S"
 stringWalk.ws2 = "^[\t\f\v\r\n\32]" -- "^%s"
 stringWalk.ws3 = "[\t\f\v\r\n\32]" -- "%s"
 stringWalk.ptn_code = "^[%z\1-\127\194-\244][\128-\191]*"
-
-
-function stringWalk._argType(n, v, e)
-	if type(v) ~= e then
-		error(interp(lang.arg_bad_type, n, e, type(v)), 2)
-	end
-end
-local _argType = stringWalk._argType
-
-
-function stringWalk._argInt(n, v)
-	if type(v) ~= "number" or v ~= math.floor(v) then
-		error(interp(lang.arg_bad_int, n), 2)
-	end
-end
-local _argInt = stringWalk._argInt
 
 
 local _mt_walk = {}

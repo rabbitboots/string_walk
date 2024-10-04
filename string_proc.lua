@@ -4,6 +4,8 @@ local stringProc = {}
 local PATH = ... and (...):match("(.-)[^%.]+$") or ""
 
 
+local _argType = require(PATH .. "pile_arg_check").type
+local interp = require(PATH .. "pile_interp")
 local stringWalk = require(PATH .. "string_walk")
 
 
@@ -23,12 +25,6 @@ stringProc.lang = {
 	err_unexpected_rep = "unexpected repeat-token: $1"
 }
 local lang = stringProc.lang
-
-
-local interp = stringWalk._interp
-
-
-local _argType = stringWalk._argType
 
 
 stringProc._iter = math.huge

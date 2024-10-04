@@ -1,3 +1,5 @@
+**Version:** 2.1.2
+
 # StringProc
 
 StringProc is an auxiliary module for StringWalk that parses strings according to grammar productions. The format is similar to, **but not fully compatible with** the version of eBNF that appears in the XML specification (see [6: Notation](https://www.w3.org/TR/REC-xml/#sec-notation)).

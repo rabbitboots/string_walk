@@ -4,10 +4,8 @@ local stringProcDebug = {}
 local PATH = ... and (...):match("(.-)[^%.]+$") or ""
 
 
+local _argType = require(PATH .. "pile_arg_check").type
 local stringWalk = require(PATH .. "string_walk")
-
-
-local _argType = stringWalk._argType
 
 
 function stringProcDebug.checkSymbols(symbols)

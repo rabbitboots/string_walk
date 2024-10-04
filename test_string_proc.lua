@@ -1,11 +1,9 @@
 local PATH = ... and (...):match("(.-)[^%.]+$") or ""
 
 
-require(PATH .. "test.lib.strict")
-local inspect = require(PATH .. "test.lib.inspect.inspect")
-
-
-local errTest = require(PATH .. "test.lib.err_test")
+require(PATH .. "test.strict")
+local inspect = require(PATH .. "test.inspect")
+local errTest = require(PATH .. "test.err_test")
 local stringWalk = require(PATH .. "string_walk")
 local stringProc = require(PATH .. "string_proc")
 local stringProcDebug = require(PATH .. "string_proc_debug")

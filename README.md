@@ -1,10 +1,19 @@
-**Version:** 2.1.1
+**Version:** 2.1.2
 
 # StringWalk
 
-Wrappers for Lua string functions.
+String functions for Lua 5.1 - 5.4.
 
-Tested with Lua 5.1.5, Lua 5.2.4, Lua 5.3.6, Lua 5.4.6 and LuaJIT 2.1.1707061634 on Fedora 39, and Lua 5.1.5 on Windows 10.
+## Package Information
+
+`string_walk.lua` is the main file.
+
+`string_proc.lua` and `string_proc_debug.lua` are auxiliary files -- see `README_string_proc.md` for more info.
+
+Files starting with `pile` contain required boilerplate code.
+
+All files and folders starting with `test` can be deleted.
+
 
 ## Behavior
 
