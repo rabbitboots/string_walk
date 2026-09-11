@@ -1,3 +1,8 @@
+# Merged into PILE Base
+
+This library was merged into the [PILE Base](https://codeberg.org/frank-f-trafton/pile_base) utility library. (See: `p_string_walk.lua` and `p_string_proc.lua`)
+
+
 **Version:** 2.1.2
 
 # StringWalk
